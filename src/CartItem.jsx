@@ -31,12 +31,9 @@ const CartItem = ({ onContinueShopping, addedToCart, setAddedToCart }) => {
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item.name));
-    setAddedToCart((prevState) => ({
-      ...prevState,
-      [item.name]: false, // Reset to false when removed
-    }));
-  };
+    dispatch(removeItem(item.name)); // Update Redux store
+};
+
   
 
   const calculateTotalCost = (item) => {

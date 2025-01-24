@@ -12,6 +12,7 @@ function ProductList() {
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.items);
     const totalCartItems = cart.reduce((count, item) => count + item.quantity, 0);
+
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -245,12 +246,12 @@ function ProductList() {
 };
 const handleAddToCart = (product) => {
     const formattedCost = parseFloat(product.cost.replace('$', '')); // Convert cost to a number
-    dispatch(addItem({ ...product, cost: formattedCost }));
-    setAddedToCart((prevState) => ({
-        ...prevState,
-      [product.name]: true, // Set to true when added
-    }));
-    };
+    dispatch(addItem({ ...product, cost: formattedCost })); // Add to cart via Redux
+};
+
+const isAddedToCart = (productName) => {
+    return cart.some((item) => item.name === productName);
+};
 
 const handlePlantsClick = (e) => {
     e.preventDefault();
@@ -295,7 +296,14 @@ const handlePlantsClick = (e) => {
                 <div className="product-description">{plant.description}</div>
                 <div className="product-cost">{plant.cost}</div>
                 {/*Similarly like the above plant.name show other details like description and cost*/}
-                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                <button
+                className="product-button"
+                onClick={() => handleAddToCart(plant)}
+                disabled={isAddedToCart(plant.name)} // Disable if already added
+                >
+                {isAddedToCart(plant.name) ? "Added to Cart" : "Add to Cart"}
+                </button>
+
             </div>
             ))}
         </div>
