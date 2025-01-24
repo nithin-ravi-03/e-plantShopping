@@ -64,6 +64,14 @@ body {
     align-items: center;
     justify-content: center;
 }
+/* Add styles for centering the category headers */
+.product-grid h1 {
+    text-align: center; /* Center the text horizontally */
+    margin-top: 20px; /* Add some spacing above */
+    font-size: 2rem; /* Adjust font size for better visibility */
+    color: #4CAF50; /* Optionally, match the navbar green color */
+    font-weight: bold; /* Make the category header bold */
+}  
 .product-list {
     display: flex;
     flex-wrap: wrap;
