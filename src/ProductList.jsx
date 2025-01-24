@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
@@ -9,7 +10,8 @@ function ProductList() {
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
     const dispatch = useDispatch();
-
+    const cart = useSelector((state) => state.cart.items);
+    const totalCartItems = cart.reduce((count, item) => count + item.quantity, 0);
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -242,12 +244,14 @@ function ProductList() {
     setShowCart(true); // Set showCart to true when cart icon is clicked
 };
 const handleAddToCart = (product) => {
-    dispatch(addItem(product));
+    const formattedCost = parseFloat(product.cost.replace('$', '')); // Convert cost to a number
+    dispatch(addItem({ ...product, cost: formattedCost }));
     setAddedToCart((prevState) => ({
-       ...prevState,
-       [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-     }));
-  };
+        ...prevState,
+      [product.name]: true, // Set to true when added
+    }));
+    };
+
 const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
@@ -300,11 +304,11 @@ const handlePlantsClick = (e) => {
 
 
         </div>
- ) :  (
-    <CartItem onContinueShopping={handleContinueShopping}/>
+) :  (
+    <CartItem onContinueShopping={handleContinueShopping} addedToCart={addedToCart} 
+    setAddedToCart={setAddedToCart} />
 )}
     </div>
     );
 }
-
 export default ProductList;
